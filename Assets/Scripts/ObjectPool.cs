@@ -4,13 +4,13 @@ using UnityEngine;
 [Serializable]
 public class ObjectPool
 {
-    private Action<GameObject> _onSpawnFunc;
-    private PoolMono _pool;
-    
     [SerializeField] private GameObject objectPrefab;
     [SerializeField] private Transform container;
     [SerializeField] private int poolCount;
     [SerializeField] private bool autoExpand = true;
+    
+    private Action<GameObject> _onSpawnFunc;
+    private PoolMono _pool;
     public void SpawnGameObject()
     {
         GameObject go = _pool.GetFreeElement();

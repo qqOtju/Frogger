@@ -1,16 +1,15 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class CarMovement : MonoBehaviour
 {
+    [SerializeField] private float speed;
+    [SerializeField] private AnimationCurve animationCurve;
+    public Vector3 EndPos { get; set; }
+    
     private Transform _transform;
     private Rigidbody2D _rb;
-    
-    [SerializeField] private float speed;
-    [SerializeField] private AnimationCurve _animationCurve;
-    public Vector3 EndPos { get; set; }
     private void Awake()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
@@ -30,15 +29,12 @@ public class CarMovement : MonoBehaviour
 
     private void Move()
     {
-        _rb.DOMove(EndPos, 10 / speed + Random.Range(-1,2)).SetEase(_animationCurve);
-        /*OnComplete(() =>
-        {
-            gameObject.SetActive(false);
-        })*/
+        _rb.DOMove(EndPos, 10 / speed + Random.Range(-1,2)).SetEase(animationCurve);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        gameObject.SetActive(false);
+        if(col.CompareTag("Finish"))
+            gameObject.SetActive(false);
     }
 }

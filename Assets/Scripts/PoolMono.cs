@@ -6,9 +6,10 @@ using Object = UnityEngine.Object;
 
 public class PoolMono
 {
+    public List<GameObject> Pool { get; private set; }
+    
     private readonly Transform _container;
     private readonly GameObject _prefab;
-    public List<GameObject> Pool { get; private set; }
 
     public bool autoExpand;
     public PoolMono(GameObject prefab, int count, Transform container)
