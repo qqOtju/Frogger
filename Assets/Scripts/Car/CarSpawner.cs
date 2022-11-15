@@ -11,8 +11,7 @@ public class CarSpawner : MonoBehaviour
     private void Awake()
     {
         pool.CreatePool(OnSpawn);
-        List<GameObject> cars = pool.GetPool();
-        foreach (GameObject car in cars)
+        foreach (GameObject car in pool.GetPool())
         {
             car.GetComponent<CarMovement>().EndPos = endPos.position;
         }
@@ -21,15 +20,13 @@ public class CarSpawner : MonoBehaviour
 
     private void OnSpawn(GameObject car)
     {
-        car.SetActive(false);
         car.transform.position = spawnPos.position;
-        car.SetActive(true);
     }
 
     private IEnumerator Spawner()
     {
         pool.SpawnGameObject();
-        yield return new WaitForSeconds(Random.Range(2,6));
+        yield return new WaitForSeconds(Random.Range(2,4));
         StartCoroutine(Spawner());
     }
 }

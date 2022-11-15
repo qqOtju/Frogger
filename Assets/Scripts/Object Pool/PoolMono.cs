@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-
 public class PoolMono
 {
     public List<GameObject> Pool { get; private set; }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement
 {
-    public Action OnMoveEnd;
+    public Action onMoveEnd;
     public void MoveObj(Transform transform, AnimationCurve animationCurve, float x, float y, float z)
     {
         Vector3 position = transform.position;
@@ -14,7 +14,7 @@ public class PlayerMovement
         transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
         transform.DOMove(newPos, 0.2f).SetEase(animationCurve).OnComplete(() =>
         {
-            OnMoveEnd?.Invoke();
+            onMoveEnd?.Invoke();
         });
     }
 }

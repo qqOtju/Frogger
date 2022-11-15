@@ -29,7 +29,7 @@ public class CarMovement : MonoBehaviour
 
     private void Move()
     {
-        _rb.DOMove(EndPos, 10 / speed + Random.Range(-1,2)).SetEase(animationCurve);
+        _rb.DOMove(EndPos, 10 / speed + Random.Range(-0.5f, 0.6f)).SetEase(animationCurve);
     }
 
     private void OnTriggerEnter2D(Collider2D col)

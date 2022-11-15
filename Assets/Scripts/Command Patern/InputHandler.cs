@@ -4,12 +4,18 @@ public class InputHandler : MonoBehaviour
 {
     [SerializeField] private GameStatusEvent onGameStatusChange;
     [SerializeField] private AnimationCurve animationCurve;
+    [SerializeField] private ParticleSystem[] jumpEffect;
+    
+    private readonly StateMachine _stateMachine = new();
+    public JumpState jumpState { private set; get; }
+    public StandingState standingState { private set; get; }
     public GameObject actor;
     private float distance = 1.75f;
     private Command _keyW, _keyA, _keyS, _keyD;
     private bool _isMoving;
     private GameStatus _status;
-
+    private int _xAxisLimiter;
+    private int _yAxisLimiter;
     private void Awake()
     {
         onGameStatusChange.Event += status =>
@@ -23,11 +29,15 @@ public class InputHandler : MonoBehaviour
         };
     }
 
-    void Start() {
-        _keyW = new Commands.Move(actor, animationCurve ,0,  distance);
-        _keyA = new Commands.Move(actor, animationCurve ,-distance, 0);
-        _keyS = new Commands.Move(actor, animationCurve ,0, -distance);
-        _keyD = new Commands.Move(actor, animationCurve ,distance,  0);
+    void Start()
+    {
+        //jumpState = new JumpState(this, _stateMachine);
+        //standingState = new StandingState(this, _stateMachine);
+        _keyW = new Commands.MoveWithEffects(actor, animationCurve,0,  distance, jumpEffect);
+        _keyA = new Commands.MoveWithEffects(actor, animationCurve,-distance, 0, jumpEffect);
+        _keyS = new Commands.MoveWithEffects(actor, animationCurve,0, -distance, jumpEffect);
+        _keyD = new Commands.MoveWithEffects(actor, animationCurve,distance,  0, jumpEffect);
+        _stateMachine.Initialize(standingState);
         _keyW.onCommandEnd += SetFalse;
         _keyA.onCommandEnd += SetFalse;
         _keyS.onCommandEnd += SetFalse;
@@ -38,6 +48,7 @@ public class InputHandler : MonoBehaviour
             return;
         if (!_isMoving && Input.GetKeyDown(KeyCode.W))
         {
+            _xAxisLimiter++;
             _isMoving = true;
             _keyW.Execute();
         }
@@ -45,7 +56,9 @@ public class InputHandler : MonoBehaviour
             _isMoving = true;
             _keyA.Execute(); 
         }
-        if (!_isMoving && Input.GetKeyDown(KeyCode.S)) {
+        if (!_isMoving && _xAxisLimiter - 1 >= 0 && Input.GetKeyDown(KeyCode.S))
+        {
+            _xAxisLimiter--;
             _isMoving = true;
             _keyS.Execute(); 
         }

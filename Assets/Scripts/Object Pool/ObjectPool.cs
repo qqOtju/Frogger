@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
 [Serializable]
 public class ObjectPool
 {
@@ -14,7 +15,7 @@ public class ObjectPool
     public void SpawnGameObject()
     {
         GameObject go = _pool.GetFreeElement();
-        _onSpawnFunc(go);
+        _onSpawnFunc.Invoke(go);
     }
 
     public List<GameObject> GetPool()
